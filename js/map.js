@@ -1,8 +1,5 @@
 function generateLevel() {
-    tryTo("generate map", function() {
-        return generateTiles() = randomPassableTile().getConnectedTiles().length;
-    }); 
-
+    generateTiles();
 }
 
 function generateTiles(){
