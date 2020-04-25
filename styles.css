@@ -1,0 +1,9 @@
+#canvas {
+    outline: 1px solid white;
+}
+
+body {
+    background-color: goldenrod;
+    text-align: center;
+    margin-top: 60px;
+}
