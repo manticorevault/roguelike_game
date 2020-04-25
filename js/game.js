@@ -25,5 +25,12 @@ function drawSprite(sprite, x, y) {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for(let counter = 0; counter < numTiles; counter++) {
+        for(let innerCounter = 0; innerCounter < numTiles; innerCounter++) {
+            placeTile(counter, innerCounter).draw();
+        }
+    }
+
     drawSprite(0, x, y);
 }

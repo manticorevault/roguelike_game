@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Dungeon of the Queens</title>
+    <title>Tomb of the Dwarven Queens</title>
     <link rel="stylesheet" href="styles.css">
     <canvas id="canvas"></canvas>
 </head>
@@ -42,7 +42,14 @@
         };
 
         setInterval(draw, 15);
+
         setupCanvas();
+
+        generateLevel();
+
+        startingPosition = randomPassableTile();
+        x = startingPosition.x;
+        y = startingPosition.y;
 
     </script>
 </body>
