@@ -18,8 +18,7 @@
         tileSize = 64;
         numTiles = 9;
         uiWidth = 4;
-
-        x = y = 0;
+        level = 1;
 
         spritesheet = new Image();
         spritesheet.src = "/spritesheet.png"
@@ -27,16 +26,16 @@
         document.querySelector("html").onkeypress = function(e) {
             switch(e.key) {
                 case "w":
-                    y--;
+                    player.tryMove(0, -1);
                     break;
                 case "s":
-                    y++;
+                    player.tryMove(0, 1);
                     break;
                 case "d":
-                    x++;
+                    player.tryMove(1, 0);
                     break;
                 case "a":
-                    x--;
+                    player.tryMove(-1, 0);
                     break;
             };
         };
@@ -47,9 +46,7 @@
 
         generateLevel();
 
-        startingPosition = randomPassableTile();
-        x = startingPosition.x;
-        y = startingPosition.y;
+        player = new Player(randomPassableTile());
 
     </script>
 </body>

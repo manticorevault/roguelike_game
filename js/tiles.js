@@ -6,6 +6,10 @@ class Tile{
         this.passable = passable;
     }
     
+    dist(other) {
+        return Math.abs(this.x-other.x)+Math.abs(this.y-other.y);
+    }
+
     getNeighbor(dx, dy) {
         return placeTile(this.x + dx, this.y + dy)
     }
@@ -23,10 +27,10 @@ class Tile{
     }
 
     getConnectedTiles() {
-        let getConnectedTiles = [this];
+        let connectedTiles = [this];
         let frontier = [this];
         while(frontier.length) {
-            let neighbors = frontier.pop().getAdjacentPassableNeighbors().filter(t => !getConnectedTiles.includes(t));
+            let neighbors = frontier.pop().getAdjacentPassableNeighbors().filter(t => !connectedTiles.includes(t));
 
             connectedTiles = connectedTiles.concat(neighbors);
             frontier = frontier.concat(neighbors);

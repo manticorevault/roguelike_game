@@ -21,7 +21,7 @@ function drawSprite(sprite, x, y) {
         tileSize,
         tileSize
     );
-};
+}
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -32,5 +32,20 @@ function draw() {
         }
     }
 
-    drawSprite(0, x, y);
+    for(let counter = 0; counter < monsters.length; counter++) {
+        monsters[counter].draw();
+    }
+
+    player.draw();
+}
+
+function tick() {
+    for(let k = monsters.length - 1; k >= 0; k--) {
+        if(!monsters[k].dead) {
+            monsters[k].update();
+
+        } else {
+            monsters.splice[k, 1];
+        }
+    }
 }

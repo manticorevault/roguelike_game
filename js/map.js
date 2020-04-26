@@ -1,10 +1,17 @@
 function generateLevel() {
-    generateTiles();
+    //generateTiles();
+
+    tryTo("generate map", function() {
+        return generateTiles() === randomPassableTile().getConnectedTiles().length;
+    });
+
+    generateMonsters();
 }
 
 function generateTiles(){
     let passableTiles = 0;
     tiles = [];
+    
     for(let counter = 0; counter < numTiles; counter++){
         tiles[counter] = [];
         for(let innerCounter = 0; innerCounter < numTiles; innerCounter++){
@@ -44,4 +51,18 @@ function randomPassableTile() {
     });
 
     return tile;
+}
+
+function generateMonsters() {
+    monsters = [];
+    let numMonsters = level+1;
+    for(let i = 0; i < numMonsters; i++){
+        spawnMonster();
+    }
+}
+
+function spawnMonster() {
+    let monsterType = shuffle([Skeleton, Reaper, Ghost, Cultist, Shielded])[0];
+    let monster = new monsterType(randomPassableTile());
+    monsters.push(monster);
 }
