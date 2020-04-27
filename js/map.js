@@ -55,14 +55,23 @@ function randomPassableTile() {
 
 function generateMonsters() {
     monsters = [];
-    let numMonsters = level+1;
-    for(let i = 0; i < numMonsters; i++){
+    let numMonsters = level+2;
+    for(let counter = 0; counter < numMonsters; counter++){
         spawnMonster();
     }
 }
 
+function randomize(array) {
+    for(let counter = array.length - 1; counter > 0; counter--) { 
+        const randomizer = Math.floor(Math.random() * (counter + 1));
+        [array[counter], array[randomizer]] = [array[randomizer], array[counter]];
+    }
+
+    return array;
+}
+
 function spawnMonster() {
-    let monsterType = shuffle([Skeleton, Reaper, Ghost, Cultist, Shielded])[0];
+    let monsterType = randomize([Skeleton, Ghost, Cultist, Reaper, Shielded])[0]
     let monster = new monsterType(randomPassableTile());
     monsters.push(monster);
 }

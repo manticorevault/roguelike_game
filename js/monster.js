@@ -3,9 +3,20 @@ class Monster {
         this.move(tile);
         this.sprite = sprite;
         this.hp = hp;
+        this.teleportCounter = 2;
+    }
+
+    heal(damage) {
+        this.hp = Math.min(maxHp, this.hp + damage);
     }
 
     update() {
+        this.teleportCounter--;
+        if(this.stunned || this.teleportCounter > 0) {
+            this.stunned = false;
+            return;
+        }
+
         this.doStuff();
     }
 
@@ -22,7 +33,22 @@ class Monster {
     }
 
     draw() {
-        drawSprite(this.sprite, this.tile.x, this.tile.y)
+        if(this.teleportCounter > 0) {
+            drawSprite(10, this.tile.x, this.tile.y);
+        } else {
+            drawSprite(this.sprite, this.tile.x, this.tile.y);
+            this.drawHp();
+        }
+    }
+
+    drawHp(){
+        for(let counter = 0; counter < this.hp; counter++){
+            drawSprite(
+                9,
+                this.tile.x + (counter%3)*(5/16),
+                this.tile.y - Math.floor(counter/3)*(5/16)
+            );
+        }
     }
 
     tryMove(dx, dy) {
@@ -30,10 +56,29 @@ class Monster {
         if (newTile.passable) {
             if(!newTile.monster) {
                 this.move(newTile);
+            } else {
+                if(this.isPlayer !== newTile.monster.isPlayer) {
+                    this.attackedThisTurn = true;
+                    newTile.monster.stunned = true;
+                    newTile.monster.hit(1)
+                }
             }
 
             return true;
         }
+    }
+
+    hit(damage) {
+        this.hp -= damage;
+        if(this.hp <= 0) {
+            this.die()
+        }
+    }
+
+    die() {
+        this.dead = true;
+        this.tile.monster = null;
+        this.sprite = 1;
     }
 
     move(tile) {
@@ -43,6 +88,8 @@ class Monster {
 
         this.tile = tile;
         tile.monster = this;
+
+        tile.stepOn(this);
     }
 }
 
@@ -50,6 +97,7 @@ class Player extends Monster {
     constructor(tile) {
         super(tile, 0, 3);
         this.isPlayer = true;
+        this.teleportCounter = 0;
     }
 
     tryMove(dx, dy) {
@@ -61,13 +109,26 @@ class Player extends Monster {
 
 class Skeleton extends Monster {
     constructor(tile) {
-        super(tile, 4, 3)
+        super(tile, 4, 2)
     }
 }
 
 class Reaper extends Monster {
     constructor(tile) {
-        super(tile, 5, 4)
+        super(tile, 5, 3)
+    }
+
+    // This mechanic helps him heal by destroying walls. 
+    // Use it as inspiration to create a mechanic that lets him
+    // Heal by destroying corpses.
+    doStuff() {
+        let neighbors = this.tile.getAdjacentPassableNeighbors().filter(t => !t.passable && insideBorders(t.x, t.y));
+        if(neighbors.length) {
+            neighbors[0].replace(Floor);
+            this.heal(0.5);
+        } else {
+            super.doStuff();
+        }
     }
 }
 
@@ -75,16 +136,41 @@ class Ghost extends Monster {
     constructor(tile) {
         super(tile, 6, 2)
     }
+
+    doStuff() {
+        let neighbors = this.tile.getAdjacentPassableNeighbors();
+        if(neighbors.length) {
+            this.tryMove(neighbors[0].x - this.tile.x, neighbors[0].y - this.tile.y);
+        }
+    }
+
 }
 
 class Cultist extends Monster {
     constructor(tile) {
-        super(tile, 7, 3)
+        super(tile, 7, 1)
+    }
+
+    doStuff() {
+        this.attackedThisTurn = false;
+        super.doStuff();
+
+        if(!this.attackedThisTurn) {
+            super.doStuff();
+        }
     }
 }
 
 class Shielded extends Monster {
     constructor(tile) {
         super(tile, 8, 5)
+    }
+
+    update() {
+        let startedStunned = this.stunned;
+        super.update();
+        if(!startedStunned) {
+            this.stunned = true;
+        }
     }
 }

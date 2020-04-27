@@ -5,6 +5,11 @@ class Tile{
         this.sprite = sprite;
         this.passable = passable;
     }
+
+    replace(newTileType) {
+        tiles[this.x][this.y] = new newTileType(this.x, this.y);
+        return tiles[this.x][this.y]
+    }
     
     dist(other) {
         return Math.abs(this.x-other.x)+Math.abs(this.y-other.y);
@@ -48,10 +53,32 @@ class Floor extends Tile {
     constructor(x, y) {
         super(x, y, 2, true);
     };
+
+    stepOn(monster) {
+        // TODO
+    }
 }
 
 class Wall extends Tile {
     constructor(x, y) {
         super(x, y, 3, false);
     };
+}
+
+class Stairs extends Tile {
+    constructor(x, y) {
+        super(x, y, 11, true);
+    }
+
+    stepOn(monster) {
+        if(monster.isPlayer) {
+            if(level === numLevels) {
+                //TODO - Program the final screen or final room with lore.
+                showTitle();
+            } else {
+                level++;
+                startLevel(Math.min(maxHp, player.hp+1));
+            }
+        }
+    }
 }

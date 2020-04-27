@@ -18,35 +18,44 @@
         tileSize = 64;
         numTiles = 9;
         uiWidth = 4;
-        level = 1;
+        level = 7;
+        maxHp = 6;
 
         spritesheet = new Image();
         spritesheet.src = "/spritesheet.png"
+        spritesheet.onload = showTitle;
+
+        gameState = "loading";
+
+        startingHp = 3;
+        numLevels = 6;
 
         document.querySelector("html").onkeypress = function(e) {
-            switch(e.key) {
-                case "w":
-                    player.tryMove(0, -1);
-                    break;
-                case "s":
-                    player.tryMove(0, 1);
-                    break;
-                case "d":
-                    player.tryMove(1, 0);
-                    break;
-                case "a":
-                    player.tryMove(-1, 0);
-                    break;
+            if(gameState === "title") {
+                startGame();
+            } else if(gameState === "dead") {
+                showTitle();
+            } else if (gameState === "running") {
+                switch(e.key) {
+                    case "w":
+                        player.tryMove(0, -1);
+                        break;
+                    case "s":
+                        player.tryMove(0, 1);
+                        break;
+                    case "d":
+                        player.tryMove(1, 0);
+                        break;
+                    case "a":
+                        player.tryMove(-1, 0);
+                        break;
+                }
             };
         };
 
         setInterval(draw, 15);
 
         setupCanvas();
-
-        generateLevel();
-
-        player = new Player(randomPassableTile());
 
     </script>
 </body>

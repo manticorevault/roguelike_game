@@ -24,19 +24,24 @@ function drawSprite(sprite, x, y) {
 }
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if(gameState === "running" || gameState === "dead") {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for(let counter = 0; counter < numTiles; counter++) {
-        for(let innerCounter = 0; innerCounter < numTiles; innerCounter++) {
-            placeTile(counter, innerCounter).draw();
+        for(let counter = 0; counter < numTiles; counter++) {
+            for(let innerCounter = 0; innerCounter < numTiles; innerCounter++) {
+                placeTile(counter, innerCounter).draw();
+            }
         }
-    }
+    
+        for(let counter = 0; counter < monsters.length; counter++) {
+            monsters[counter].draw();
+        }
+    
+        player.draw();
 
-    for(let counter = 0; counter < monsters.length; counter++) {
-        monsters[counter].draw();
-    }
+        drawText("Floor: " + level, 30, false, 40, "black");
 
-    player.draw();
+    }
 }
 
 function tick() {
@@ -48,4 +53,57 @@ function tick() {
             monsters.splice[k, 1];
         }
     }
+
+    if(player.dead) {
+        gameState = "dead";
+    }
+
+    spawnCounter--;
+    if(spawnCounter <= 0) {
+        spawnMonster();
+        spawnCounter = spawnRate;
+        spawnRate--;
+    }
+}
+
+function showTitle() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    gameState = "title";
+
+    drawText("TOMB OF THE", 40, true, canvas.height / 2 - 80, "white");
+    drawText("DWARVEN QUEENS", 50, true, canvas.height / 2 - 10, "white");
+}
+
+function startGame() {
+    level = 1;
+    startLevel(startingHp);
+
+    gameState = "running";
+}
+
+function startLevel(playerHp) {
+    spawnRate = 15;
+    spawnCounter = spawnRate;
+
+    generateLevel();
+
+    player = new Player(randomPassableTile());
+    player.hp = playerHp;
+
+    randomPassableTile().replace(Stairs);
+}
+
+function drawText(text, size, centered, textY, color){
+    ctx.fillStyle = color;
+    ctx.font = size + "px serif";
+    let textX;
+    if (centered) {
+        textX = (canvas.width-ctx.measureText(text).width) / 2;
+    } else {
+        textX = canvas.width-uiWidth*tileSize + 25;
+    }
+
+    ctx.fillText(text, textX, textY);
 }
