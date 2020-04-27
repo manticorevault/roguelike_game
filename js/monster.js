@@ -100,7 +100,12 @@ class Monster {
     die() {
         this.dead = true;
         this.tile.monster = null;
-        this.sprite = 1;
+        if(this.isPlayer) {
+            this.sprite = 1;
+        } else {
+            this.sprite = 50;
+        }
+        
     }
 
     move(tile) {

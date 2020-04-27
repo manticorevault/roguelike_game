@@ -76,8 +76,9 @@ function showTitle() {
 
     gameState = "title";
 
-    drawText("TOMB OF THE", 40, true, canvas.height / 2 - 100, "white");
-    drawText("DWARVEN QUEENS", 50, true, canvas.height / 2 - 50, "white");
+    drawText("TOMB OF THE", 40, true, canvas.height / 2 - 140, "white");
+    drawText("DWARVEN QUEENS", 50, true, canvas.height / 2 - 90, "white");
+    drawText("press enter", 30, true, canvas.height / 2 - 45, "white")
 
     drawScores();
 }
