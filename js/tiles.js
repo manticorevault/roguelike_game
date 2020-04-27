@@ -46,7 +46,12 @@ class Tile{
 
 	draw(){
         drawSprite(this.sprite, this.x, this.y);
-	}
+
+        if(this.treasure) {
+            drawSprite(12, this.x, this.y)
+        }
+    }
+    
 }
 
 class Floor extends Tile {
@@ -55,7 +60,11 @@ class Floor extends Tile {
     };
 
     stepOn(monster) {
-        // TODO
+        if(monster.isPlayer && this.treasure) {
+            score++;
+            this.treasure = false;
+            spawnMonster();
+        }
     }
 }
 
@@ -74,10 +83,11 @@ class Stairs extends Tile {
         if(monster.isPlayer) {
             if(level === numLevels) {
                 //TODO - Program the final screen or final room with lore.
+                addScore(score, true);
                 showTitle();
             } else {
                 level++;
-                startLevel(Math.min(maxHp, player.hp+1));
+                startLevel(Math.min(maxHp, player.hp + 1));
             }
         }
     }

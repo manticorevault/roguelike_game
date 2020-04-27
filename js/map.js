@@ -6,6 +6,10 @@ function generateLevel() {
     });
 
     generateMonsters();
+
+    for(let counter = 0; counter < 3; counter++){
+        randomPassableTile().treasure = true;
+    }
 }
 
 function generateTiles(){
@@ -55,7 +59,7 @@ function randomPassableTile() {
 
 function generateMonsters() {
     monsters = [];
-    let numMonsters = level+2;
+    let numMonsters = level + 2;
     for(let counter = 0; counter < numMonsters; counter++){
         spawnMonster();
     }

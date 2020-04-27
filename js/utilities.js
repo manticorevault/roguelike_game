@@ -13,7 +13,7 @@ function randomRange(min, max) {
 } 
 
 function shuffle(arr) {
-    let temp, random;
+    let temp, random
     for(let counter = 1; counter < arr.lenght; counter++) {
         random = randomRange(0, counter);
         temp = arr[counter];
@@ -22,4 +22,16 @@ function shuffle(arr) {
     }
 
     return arr;
+}
+
+function rightPad(textArray){
+    let finalText = "";
+    textArray.forEach(text => {
+        text += "";
+        for(let counter = text.length; counter < 10; counter++){
+            text+=" ";
+        }
+        finalText += text;
+    });
+    return finalText;
 }

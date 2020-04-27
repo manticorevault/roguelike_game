@@ -40,6 +40,7 @@ function draw() {
         player.draw();
 
         drawText("Floor: " + level, 30, false, 40, "black");
+        drawText("Score: " + score, 30, false, 70, "black");
 
     }
 }
@@ -55,6 +56,7 @@ function tick() {
     }
 
     if(player.dead) {
+        addScore(score, false);
         gameState = "dead";
     }
 
@@ -72,12 +74,17 @@ function showTitle() {
 
     gameState = "title";
 
-    drawText("TOMB OF THE", 40, true, canvas.height / 2 - 80, "white");
-    drawText("DWARVEN QUEENS", 50, true, canvas.height / 2 - 10, "white");
+    drawText("TOMB OF THE", 40, true, canvas.height / 2 - 100, "white");
+    drawText("DWARVEN QUEENS", 50, true, canvas.height / 2 - 50, "white");
+
+    drawScores();
 }
 
 function startGame() {
+
+    //TODO: Add a NewGame+ feature, incrementing the first level according to the number of runs.
     level = 1;
+    score = 0;
     startLevel(startingHp);
 
     gameState = "running";
@@ -106,4 +113,65 @@ function drawText(text, size, centered, textY, color){
     }
 
     ctx.fillText(text, textX, textY);
+}
+
+function getScores() {
+    if(localStorage["scores"]) {
+        return JSON.parse(localStorage["scores"]);
+    } else {
+        return [];
+    }
+}
+
+function addScore(score, won) {
+    let scores = getScores();
+    let scoreObject = { score: score, run: 1, totalScore: score, active: won };
+    let lastScore = scores.pop();
+
+    if(lastScore) {
+        if(lastScore.active) {
+            scoreObject.run = lastScore.run + 1;
+            scoreObject.totalScore += lastScore.totalScore;
+        } else {
+            scores.push(lastScore);
+        }
+    }
+    
+    scores.push(scoreObject);
+
+    localStorage["scores"] = JSON.stringify(scores);
+}
+
+function drawScores() {
+    let scores = getScores();
+    if(scores.length) {
+        drawText(
+            rightPad([ "RUN", "SCORE", "TOTAL" ]),
+            15,
+            true,
+            canvas.height / 2,
+            "white"
+        );
+
+        let newestScore = scores.pop();
+        scores.sort(function(a, b) {
+            return b.totalScore - a.totalScore;
+        });
+
+        scores.unshift(newestScore);
+
+        for(let counter = 0; counter < Math.min(10, scores.length); counter++) {
+            let scoreText = rightPad([scores[counter].run, 
+                            scores[counter].score, 
+                            scores[counter].totalScore]);
+
+            drawText(
+                scoreText,
+                20,
+                true,
+                canvas.height / 2 + 24 + counter*24,
+                counter === 0 ? "yellow" : "gray"
+            );
+        }
+    }
 }
