@@ -6,6 +6,7 @@ class Monster {
         this.teleportCounter = 2;
         this.offsetX = 0;
         this.offsetY = 0;
+        this.lastMove = [-1, 0];
     }
 
     heal(damage) {
@@ -71,6 +72,7 @@ class Monster {
     tryMove(dx, dy) {
         let newTile = this.tile.getNeighbor(dx, dy);
         if (newTile.passable) {
+            this.lastMove = [dx, dy]
             if(!newTile.monster) {
                 this.move(newTile);
             } else {
@@ -91,6 +93,11 @@ class Monster {
     }
 
     hit(damage) {
+
+        if(this.shield > 0) {
+            return;
+        }
+
         this.hp -= damage;
         if(this.hp <= 0) {
             this.die()
@@ -129,6 +136,11 @@ class Player extends Monster {
         super(tile, 0, 3);
         this.isPlayer = true;
         this.teleportCounter = 0;
+        this.spells = shuffle(Object.keys(spells)).splice(0, numSpells);
+    }
+
+    update() {
+        this.shield--;
     }
 
     tryMove(dx, dy) {
@@ -136,6 +148,23 @@ class Player extends Monster {
             tick();
         }
     }
+    /* 
+    addSpell() {
+        let newSpell = shuffle(Object.keys(spells))[0];
+        this.spells.push(newSpell);
+    }
+
+    castSpell(index) {
+
+        let spellName = this.spells[index];
+
+        if(spellName) {
+            delete this.spells[index];
+            spells[spellName]();
+            tick();
+        }
+    }
+    */
 }
 
 class Skeleton extends Monster {
@@ -149,9 +178,6 @@ class Reaper extends Monster {
         super(tile, 5, 3)
     }
 
-    // This mechanic helps him heal by destroying walls. 
-    // Use it as inspiration to create a mechanic that lets him
-    // Heal by destroying corpses.
     doStuff() {
         let neighbors = this.tile.getAdjacentPassableNeighbors().filter(t => !t.passable && insideBorders(t.x, t.y));
         if(neighbors.length) {

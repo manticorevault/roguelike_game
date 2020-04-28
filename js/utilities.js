@@ -13,12 +13,12 @@ function randomRange(min, max) {
 } 
 
 function shuffle(arr) {
-    let temp, random
+    let temp, random;
     for(let counter = 1; counter < arr.lenght; counter++) {
         random = randomRange(0, counter);
         temp = arr[counter];
         arr[counter] = arr[random];
-        arr[counter] = temp;
+        arr[random] = temp;
     }
 
     return arr;

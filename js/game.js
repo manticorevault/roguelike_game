@@ -43,6 +43,15 @@ function draw() {
 
         drawText("Floor: " + level, 30, false, 40, "black");
         drawText("Score: " + score, 30, false, 70, "black");
+       /* 
+        drawText("Spells: ", 20, false, 100, "black");
+        
+        for(let counter = 0; counter < player.spells.length; counter++) {
+            let spellText = (counter + 1) + ") " + (player.spells[counter] || "");                        
+            drawText(spellText, 15, false, 120 + counter*40, "red");   
+        
+        }
+        */
 
     }
 }
@@ -56,6 +65,8 @@ function tick() {
             monsters.splice[k, 1];
         }
     }
+
+    player.update();
 
     if(player.dead) {
         addScore(score, false);
@@ -83,11 +94,26 @@ function showTitle() {
     drawScores();
 }
 
+function deadScreen() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    gameState = "title";
+
+    drawText("YOU ARE", 40, true, canvas.height / 2 - 140, "white");
+    drawText("DEAD", 50, true, canvas.height / 2 - 90, "red");
+    drawText("Ayreon's spirit got trapped inside the Tomb of The Dwarven Queens", 15, true, canvas.height / 2 - 40, "white");
+    drawText("alongside the other damned souls. ", 15, true, canvas.height / 2 - 20, "white");
+    drawText("press enter", 30, true, canvas.height / 2 + 10, "white")
+
+}
+
 function startGame() {
 
     //TODO: Add a NewGame+ feature, incrementing the first level according to the number of runs.
     level = 1;
     score = 0;
+    numSpells = 1;
     startLevel(startingHp);
 
     gameState = "running";
