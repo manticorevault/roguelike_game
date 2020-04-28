@@ -43,6 +43,8 @@ function draw() {
 
         drawText("Floor: " + level, 30, false, 40, "black");
         drawText("Score: " + score, 30, false, 70, "black");
+        drawSideScores();
+        
        /* 
         drawText("Spells: ", 20, false, 100, "black");
         
@@ -121,6 +123,7 @@ function endScreen(){
     drawText("as the sun greeted him, finally, once more", 15, true, canvas.height / 2 + 60, "white");
     drawText("with its golden dawn.", 15, true, canvas.height / 2 + 80, "goldenrod");
     drawText("press enter", 30, true, canvas.height / 2 + 125, "red")
+
 }
 
 function startGame() {
@@ -214,6 +217,41 @@ function drawScores() {
                 true,
                 canvas.height / 2 + 24 + counter*24,
                 counter === 0 ? "yellow" : "gray"
+            );
+        }
+    }
+}
+
+
+function drawSideScores() {
+    let scores = getScores();
+    if(scores.length) {
+        drawText(
+            rightPad([ "RUN", "SCORE", "TOTAL" ]),
+            15,
+            false,
+            canvas.height / 3,
+            "white"
+        );
+
+        let newestScore = scores.pop();
+        scores.sort(function(a, b) {
+            return b.totalScore - a.totalScore;
+        });
+
+        scores.unshift(newestScore);
+
+        for(let counter = 0; counter < Math.min(10, scores.length); counter++) {
+            let scoreText = rightPad([scores[counter].run, 
+                            scores[counter].score, 
+                            scores[counter].totalScore]);
+
+            drawText(
+                scoreText,
+                25,
+                false,
+                canvas.height / 3 + 25 + counter*24,
+                counter === 0 ? "yellow" : "black"
             );
         }
     }
