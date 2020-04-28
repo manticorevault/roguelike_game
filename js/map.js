@@ -59,7 +59,7 @@ function randomPassableTile() {
 
 function generateMonsters() {
     monsters = [];
-    let numMonsters = level + 2;
+    let numMonsters = level + run + 1;
     for(let counter = 0; counter < numMonsters; counter++){
         spawnMonster();
     }

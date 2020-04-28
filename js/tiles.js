@@ -90,6 +90,7 @@ class Stairs extends Tile {
         if(monster.isPlayer) {
             if(level === numLevels) {
                 //TODO: Add a NewGame+ feature, incrementing the first level according to the number of runs.
+                run += 1
                 addScore(score, true);
                 endScreen();
             } else {
