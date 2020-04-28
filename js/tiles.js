@@ -89,9 +89,9 @@ class Stairs extends Tile {
     stepOn(monster) {
         if(monster.isPlayer) {
             if(level === numLevels) {
-                //TODO - Program the final screen or final room with lore.
+                //TODO: Add a NewGame+ feature, incrementing the first level according to the number of runs.
                 addScore(score, true);
-                showTitle();
+                endScreen();
             } else {
                 level++;
                 startLevel(Math.min(maxHp, player.hp + 1));

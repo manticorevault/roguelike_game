@@ -102,15 +102,30 @@ function deadScreen() {
 
     drawText("YOU ARE", 40, true, canvas.height / 2 - 140, "white");
     drawText("DEAD", 50, true, canvas.height / 2 - 90, "red");
-    drawText("Ayreon's spirit got trapped inside the Tomb of The Dwarven Queens", 15, true, canvas.height / 2 - 40, "white");
+    drawText("Ayreon's spirit got trapped inside the Tomb of The Dwarven Queens,", 15, true, canvas.height / 2 - 40, "white");
     drawText("alongside the other damned souls. ", 15, true, canvas.height / 2 - 20, "white");
     drawText("press enter", 30, true, canvas.height / 2 + 10, "white")
 
 }
 
+function endScreen(){
+    ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    gameState = "title";
+
+    drawText("As Ayreon reached the last room of the Tomb of the Dwarven Queens,", 15, true, canvas.height / 2 - 40, "white");
+    drawText("he uncovered the shield that once belonged to the great Queen ꝥora...", 15, true, canvas.height / 2 - 20, "white");
+    drawText("As he walked back to the surface, the monsters he slayed in his journey", 15, true, canvas.height / 2 + 0, "white");
+    drawText("laid still, a pile of bones and cloth...", 15, true, canvas.height / 2 + 20, "white");
+    drawText("As he reached to the first level, he could already see the light", 15, true, canvas.height / 2 + 40, "white");
+    drawText("as the sun greeted him, finally, once more", 15, true, canvas.height / 2 + 60, "white");
+    drawText("with its golden dawn.", 15, true, canvas.height / 2 + 80, "goldenrod");
+    drawText("press enter", 30, true, canvas.height / 2 + 105, "red")
+}
+
 function startGame() {
 
-    //TODO: Add a NewGame+ feature, incrementing the first level according to the number of runs.
     level = 1;
     score = 0;
     numSpells = 1;
