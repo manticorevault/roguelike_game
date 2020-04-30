@@ -8,6 +8,37 @@
     <canvas id="canvas"></canvas>
 </head>
 <body>
+
+    <nav class="navigation">
+        
+        <button aria-expanded="false" aria-controls="menu">Tutorial</button>
+
+        <ul hidden>
+          <li>First of all, this is a roguelike game. And what does it mean?</li>
+          <li>It means that you're going to die. A lot. But that's okay!</li>
+          <li>In every run, you'll learn something new. That's nice, huh?</li>
+          <li>Use this knowledge to go deeper into the dungeon</li>
+          <li>And then, at some point, you'll be able to save our hero!</li>
+          <li>Don't give up! This is a game about persistency.</li>
+          <li>Now, show me your best 'can-do' attitude, press enter and try it out</li>
+        </ul>
+
+
+    </nav>
+
+    <script>
+        const toggleMenu = document.querySelector(".navigation button");
+        const menu = document.querySelector(".navigation ul")
+
+        toggleMenu.addEventListener('click', function() {
+            const open = JSON.parse(toggleMenu.getAttribute('aria-expanded'));
+            toggleMenu.setAttribute('aria-expanded', !open);
+            menu.hidden = !menu.hidden;
+        })
+    </script>
+
+    
+
     <script src="js/game.js"></script>
     <script src="js/map.js"></script>
     <script src="js/tiles.js"></script>

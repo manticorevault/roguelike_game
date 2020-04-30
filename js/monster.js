@@ -3,7 +3,7 @@ class Monster {
         this.move(tile);
         this.sprite = sprite;
         this.hp = hp;
-        this.teleportCounter = 2;
+        this.teleportCounter = 1;
         this.offsetX = 0;
         this.offsetY = 0;
         this.lastMove = [-1, 0];
