@@ -62,13 +62,14 @@ class Floor extends Tile {
     stepOn(monster) {
         if(monster.isPlayer && this.treasure) {
             score++;
+            playSound("chest")
 
             // Adds spells to the spell array
             // up to a max number (3, in this case)
-            if(score%3 === 0 && numSpells < 3) {
-                numSpells++;
-                player.addSpell;
-            }
+            // if(score%3 === 0 && numSpells < 3) {
+            //     numSpells++;
+            //     player.addSpell;
+            // }
             this.treasure = false;
             spawnMonster();
         }
@@ -90,7 +91,8 @@ class Stairs extends Tile {
         if(monster.isPlayer) {
             if(level === numLevels) {
 
-                //TODO: Add a NewGame+ feature, incrementing the first level according to the number of runs.
+                playSound("stairs")
+
                 run += 1
                 addScore(score, true);
                 endScreen();

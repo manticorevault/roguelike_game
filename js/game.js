@@ -89,9 +89,11 @@ function showTitle() {
 
     gameState = "title";
 
-    drawText("TOMB OF THE", 40, true, canvas.height / 2 - 140, "white");
-    drawText("DWARVEN QUEENS", 50, true, canvas.height / 2 - 90, "white");
-    drawText("press enter", 30, true, canvas.height / 2 - 45, "white")
+    drawText("TOMB OF THE", 40, true, canvas.height / 2 - 200, "goldenrod");
+    drawText("DWARVEN QUEENS", 50, true, canvas.height / 2 - 150, "goldenrod");
+    drawText("use w/a/s/d to move", 30, true, canvas.height / 2 - 105, "white")
+    drawText("press enter to start", 25, true, canvas.height / 2 - 75, "white")
+    drawText("and prepare to die!", 20, true, canvas.height / 2 - 48, "red")
 
     drawScores();
 }
@@ -106,7 +108,7 @@ function deadScreen() {
     drawText("DEAD", 110, true, canvas.height / 2 - 10, "red");
     drawText("Ayreon's spirit got trapped inside the Tomb of The Dwarven Queens,", 15, true, canvas.height / 2 + 30, "white");
     drawText("alongside the other damned souls. ", 15, true, canvas.height / 2 + 50, "white");
-    drawText("press enter", 30, true, canvas.height / 2 + 90, "white")
+    drawText("press enter to start again", 30, true, canvas.height / 2 + 90, "white")
 }
 
 function endScreen(){
@@ -122,7 +124,7 @@ function endScreen(){
     drawText("As he reached to the first level, he could already see the light", 15, true, canvas.height / 2 + 40, "white");
     drawText("as the sun greeted him, finally, once more", 15, true, canvas.height / 2 + 60, "white");
     drawText("with its golden dawn.", 15, true, canvas.height / 2 + 80, "goldenrod");
-    drawText("press enter", 30, true, canvas.height / 2 + 125, "red")
+    drawText("press enter to start again", 30, true, canvas.height / 2 + 125, "red")
 
 }
 
@@ -134,6 +136,9 @@ function startGame() {
     startLevel(startingHp);
 
     gameState = "running";
+
+    playSound("theme")
+
 }
 
 function startLevel(playerHp) {
@@ -257,6 +262,7 @@ function drawSideScores() {
     }
 }
 
+
 function screenshake() {
     if (shakeIntensity) {
         shakeIntensity--;
@@ -265,4 +271,20 @@ function screenshake() {
     let shakeAngle = Math.random()*Math.PI*2;
     shakeX = Math.round(Math.cos(shakeAngle)*shakeIntensity);
     shakeY = Math.round(Math.sin(shakeAngle)*shakeIntensity);
+}
+
+function startSounds() {
+    sounds = {
+        hitChar: new Audio('/sounds/Hit_Char.wav'),
+        hitMon: new Audio('/sounds/Hit_Monster.wav'),
+        chest: new Audio('/sounds/Chest.wav'),
+        stairs: new Audio('/sounds/Stairs.wav'),
+        theme: new Audio('/sounds/Astronomia.wav'),
+
+    };
+}
+
+function playSound(soundName) {
+    sounds[soundName].currentTime = 0;
+    sounds[soundName].play();
 }

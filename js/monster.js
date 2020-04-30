@@ -102,6 +102,13 @@ class Monster {
         if(this.hp <= 0) {
             this.die()
         }
+
+        if(this.isPlayer) {
+            playSound("hitChar");
+        } else {
+            playSound("hitMon");
+        }
+
     }
 
     die() {
