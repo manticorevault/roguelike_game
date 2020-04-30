@@ -89,9 +89,10 @@ class Stairs extends Tile {
 
     stepOn(monster) {
         if(monster.isPlayer) {
+
+            playSound("stairs")
             if(level === numLevels) {
 
-                playSound("stairs")
 
                 run += 1
                 addScore(score, true);
